@@ -33,10 +33,10 @@ class HttpsHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/plain")
         self.end_headers()
         self.wfile.write(
-            bytes(f"Client connection from {self.client_address[0]} to server {self.server.sni}", "utf-8"))
+            bytes(f"Client connection from {self.client_address} to Gideon {self.server.sni}", "utf-8"))
 
 
-class MxServer(ThreadingHTTPServer):
+class MxGideon(ThreadingHTTPServer):
     def __init__(self, keyfile, certfile, reqh_class, bind_port, is_tls=False, caroot=None):
         self.keyfile = keyfile
         self.certfile = certfile
@@ -62,29 +62,17 @@ def init_vars():
     else:
         domain_name = "home.arpa"
 
-    ca_root_file = SECRET_PREFIX
-    if "MX_cafile" in os.environ:
-        ca_root_file += os.environ["MX_cafile"]
-    else:
-        ca_root_file += "root-ca.pem"
-
-    keyfile = SECRET_PREFIX
-    if "MX_keyfile" in os.environ:
-        keyfile += os.environ["MX_keyfile"]
-    else:
-        keyfile += "key.pem"
-
-    certfile = SECRET_PREFIX
-    if "MX_certfile" in os.environ:
-        certfile += os.environ["MX_certfile"]
-    else:
-        certfile += "cert.pem"
-
     if "MX_certspath" in os.environ:
-        if os.environ["MX_certspath"] != "":
-            certfile = f'{os.environ["MX_certspath"]}/{certfile}'
-            keyfile = f'{os.environ["MX_certspath"]}/{keyfile}'
-            ca_root_file = f'{os.environ["MX_certspath"]}/{ca_root_file}'
+        prefix = os.environ["MX_certspath"] 
+        keyfile = f'{prefix}/{domain_name}/key.pem'
+        certfile = f'{prefix}/{domain_name}/cert.pem'
+    else:
+        prefix = SECRET_PREFIX
+        keyfile = f'{prefix}/key.pem'
+        certfile = f'{prefix}/cert.pem'
+
+    ca_root_file = f'{prefix}/root-ca.pem'
+
     return domain_name, ca_root_file, keyfile, certfile
 
 
@@ -99,10 +87,10 @@ def run(s, ss):
 
 if __name__ == "__main__":
     domain, ca_root, key, cert = init_vars()
-    https = MxServer(key, cert, HttpsHandler, bind_port=8443, is_tls=True)
-    http = MxServer(key, cert, HttpHandler, bind_port=8080, is_tls=False, caroot=ca_root)
-    print(f"Server started at https://{https.bind_address}:{https.bind_port}")
-    print(f"Server started at http://{http.bind_address}:{http.bind_port}")
+    https = MxGideon(key, cert, HttpsHandler, bind_port=8443, is_tls=True)
+    http = MxGideon(key, cert, HttpHandler, bind_port=8080, is_tls=False, caroot=ca_root)
+    print(f"Gideon started at https://{https.bind_address}:{https.bind_port}")
+    print(f"Gideon started at http://{http.bind_address}:{http.bind_port}")
 
     try:
         run(http, https)
@@ -111,4 +99,4 @@ if __name__ == "__main__":
 
     https.server_close()
     http.server_close()
-    print("Server stopped.")
+    print("Gideon stopped.")
