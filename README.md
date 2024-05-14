@@ -26,8 +26,8 @@ Prerequisites: Makefile and Go SDK (>1.17) (https://go.dev/doc/install)
 ```
 .
 └── challenge
-    ├── client
-    │   ├── client.py
+    ├── harrow
+    │   ├── harrow.py
     │   ├── Dockerfile
     │   ├── Makefile
     │   └── requirements.txt
@@ -38,19 +38,19 @@ Prerequisites: Makefile and Go SDK (>1.17) (https://go.dev/doc/install)
     │   ├── go.mod
     │   └── main.go
     ├── README.md
-    └── server
+    └── gideon
         ├── Dockerfile
         ├── Makefile
         ├── requirements.txt
-        └── server.py
+        └── gideon.py
 ```
 - Makefile: to build certificates, build and push images to repo
 - compose.yaml: docker-compose manifest 
-- **client** sub-folder contains:
+- **harrow** sub-folder contains:
   - the python code of the HTTPS client, 
   - the Makefile to build the docker image, 
   - and the Dockerfile of the docker image 
-- **server** sub-folder contains: 
+- **gideon** sub-folder contains: 
   - the python code of the HTTPS server,
   - the Makefile to build the docker image, 
   - and the Dockerfile of the docker image 
@@ -58,7 +58,7 @@ Prerequisites: Makefile and Go SDK (>1.17) (https://go.dev/doc/install)
 
 ## Solution description
 
-### server.py
+### gideon.py
 Implements both an HTTP and HTTPS server.
 The HTTPS server response is: 
 ```
@@ -74,13 +74,14 @@ http://[server name]/root_ca
 to provide the root_ca certificate to the client, so the client can trust the 
 server certificate for secure connections.
 
-### client.py
+### harrow.py
 Implements the HTTP/HTTPS client. Obtain the root ca from the HTTP endpoint, and added it to the 
 truststore. 
 Run in a loop requesting the server using three different names (randomly). These names are:
-- server1.[domain]
-- server2.[domain]
-- server3.[domain]
+- house1.[domain]
+- house2.[domain]
+...
+- house9.[domain]
 
 Docker Embedded DNS is used by the client.
 
@@ -93,9 +94,6 @@ to be added to the Docker embedded DNS, and inject the certificates as secrets t
 | Name         | Description                          |
 |--------------|--------------------------------------|
 | MX_domain    | Domain name for certificates and DNS |
-| MX_certfile  | Server Certificate                   |
-| MX_keyfile   | Private Key                          |
-| MX_cafile    | CA root certificate                  |
 | MX_certspath | Path to create certificates          |
 
 ## Deployment of the solution
@@ -125,3 +123,4 @@ building the config repo in GIT to be pulled to trigger updates (rollout/rollbac
 
 ### Thanks to
 Minica, the Certificates Generator at https://github.com/jsha/minica
+Tamsyn Muir, for her books about The Locker Tomb
