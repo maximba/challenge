@@ -122,5 +122,4 @@ building the config repo in GIT to be pulled to trigger updates (rollout/rollbac
 
 
 ### Thanks to
-Minica, the Certificates Generator at https://github.com/jsha/minica
-Tamsyn Muir, for her books about The Locker Tomb
+Minica, the Certificates Generator at https://github.com/jsha/minica and Tamsyn Muir, for her books about The Locker Tomb
