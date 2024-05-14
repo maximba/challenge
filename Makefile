@@ -31,11 +31,11 @@ certs:
 		-domains '$(DOMAIN),*.$(DOMAIN),localhost' \
 		-ip-addresses 127.0.0.1 || true
 build:
-	$(MAKE) -C server build
-	$(MAKE) -C client build
+	$(MAKE) -C gideon build
+	$(MAKE) -C harrow build
 
 push:
-	$(MAKE) -C server push	
-	$(MAKE) -C client push
+	$(MAKE) -C gideon push	
+	$(MAKE) -C harrow push
 
 all: certs build 

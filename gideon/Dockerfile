@@ -5,5 +5,5 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-COPY client.py ./
-CMD [ "python", "./client.py" ]
+COPY gideon.py ./
+CMD [ "python", "./gideon.py" ]

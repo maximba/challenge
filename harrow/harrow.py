@@ -5,7 +5,7 @@ import time
 
 
 def random_server(prefix):
-    return f"server{randrange(1, 4)}.{prefix}"
+    return f"house{randrange(1, 9)}.{prefix}"
 
 
 def init_vars():
@@ -14,10 +14,7 @@ def init_vars():
     else:
         domain_name = "home.arpa"
 
-    if "MX_cafile" in os.environ:
-        ca_root_file = os.environ["MX_cafile"]
-    else:
-        ca_root_file = "root-ca.pem"
+    ca_root_file = "root-ca.pem"
     return domain_name, ca_root_file
 
 
@@ -57,4 +54,4 @@ if __name__ == "__main__":
         run(sess, dom, caroot)
     except KeyboardInterrupt:
         sess.close()
-        print("Client Stopped")
+        print("Harrow Stopped")

@@ -2,7 +2,7 @@
 pyvers=3.11-slim-bullseye
 
 #vars
-IMAGENAME=pyclient
+IMAGENAME=gideon
 IMAGE_VER=1.0.0
 REPO=maximba
 IMAGEFULLNAME=${REPO}/${IMAGENAME}:${IMAGE_VER}
@@ -12,8 +12,7 @@ IMAGEFULLNAME=${REPO}/${IMAGENAME}:${IMAGE_VER}
 help:
 	    @echo "Makefile arguments:"
 	    @echo ""
-	    @echo "pyversion - Python Version"
-	    @echo "pyclient - pyclient version"
+	    @echo "pyvers - Python Version"
 	    @echo ""
 	    @echo "Makefile commands:"
 	    @echo "build"

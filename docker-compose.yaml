@@ -1,0 +1,52 @@
+---
+services:
+  server:
+    hostname: gideon
+    build:
+      context: ./gideon
+      args:
+        pyvers: 3.11-slim-bullseye
+    image: maximba/gideon:1.0.0
+    secrets:
+      - cert.pem
+      - key.pem
+      - root-ca.pem
+    environment:
+      - MX_domain=${MX_domain}
+    ports:
+      - '443:8443'
+      - '80:8080'
+    command: ["python","gideon.py"]
+
+  client:
+    hostname: harrow
+    links:
+      - "server:${MX_domain}"
+      - "server:house1.${MX_domain}"
+      - "server:house2.${MX_domain}"
+      - "server:house3.${MX_domain}"
+      - "server:house4.${MX_domain}"
+      - "server:house5.${MX_domain}"
+      - "server:house6.${MX_domain}"
+      - "server:house7.${MX_domain}"
+      - "server:house8.${MX_domain}"
+      - "server:house9.${MX_domain}"
+        
+    build:
+      context: ./harrow
+      args:
+        pyvers: 3.11-slim-bullseye
+    image: maximba/harrow:1.0.0
+    environment:
+      - MX_domain=${MX_domain}
+    command: ["python","harrow.py"]
+    depends_on:
+      - server
+
+secrets:
+  cert.pem:
+    file: "${MX_certspath}/${MX_domain}/cert.pem"
+  key.pem:
+    file: "${MX_certspath}/${MX_domain}/key.pem"
+  root-ca.pem:
+    file: "${MX_certspath}/root-ca.pem"
