@@ -3,7 +3,7 @@ pyvers=3.11-slim-bullseye
 
 #vars
 IMAGENAME=gideon
-IMAGE_VER=1.0.0
+IMAGE_VER=1.0.7
 REPO=maximba
 IMAGEFULLNAME=${REPO}/${IMAGENAME}:${IMAGE_VER}
 

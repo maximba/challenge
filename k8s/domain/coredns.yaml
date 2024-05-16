@@ -1,0 +1,49 @@
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf {
+           max_concurrent 1000
+        }
+        cache 30
+        loop
+        reload
+        loadbalance
+        file /etc/coredns/dominicus-zone.db dominicus.techandtapas {
+          upstream
+        }
+    }
+  dominicus-zone.db: |+
+    ; dominicus.techandtapas zone
+    dominicus.techandtapas.                   IN          SOA         sns.dns.icann.org.  noc.dns.icann.org. 2019101701 7200 3600 1209600 3600
+    dominicus.techandtapas.                   IN          NS          b.iana-servers.net.
+    dominicus.techandtapas.                   IN          NS          b.iana-servers.net.
+    house1.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house2.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house3.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house4.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house5.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house6.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house7.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house8.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+    house9.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"coredns","namespace":"kube-system","creationTimestamp":null},"data":{"Corefile":".:53 {\n    errors\n    health {\n       lameduck 5s\n    }\n    ready\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n       pods insecure\n       fallthrough in-addr.arpa ip6.arpa\n       ttl 30\n    }\n    prometheus :9153\n    forward . /etc/resolv.conf {\n       max_concurrent 1000\n    }\n    cache 30\n    loop\n    reload\n    loadbalance\n    file /etc/coredns/dominicus-zone.db dominicus.techandtapas {\n      upstream\n    }\n}\n","dominicus.techandtapas":"; dominicus.techandtapas zone\ndominicus.techandtapas.                   IN          SOA         sns.dns.icann.org.  noc.dns.icann.org. 2019101701 7200 3600 1209600 3600\ndominicus.techandtapas.                   IN          NS          b.iana-servers.net.\ndominicus.techandtapas.                   IN          NS          b.iana-servers.net.\ndominicus.techandtapas.                   IN          A           127.0.0.1\nhouse1.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse2.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse3.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse4.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse5.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse6.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse7.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse8.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\nhouse9.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.\n\n"}}
+  creationTimestamp: null
+  name: coredns
+  namespace: kube-system

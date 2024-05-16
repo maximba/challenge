@@ -3,7 +3,7 @@ pyvers=3.11-slim-bullseye
 
 #vars
 IMAGENAME=harrow
-IMAGE_VER=1.0.0
+IMAGE_VER=1.0.4
 REPO=maximba
 IMAGEFULLNAME=${REPO}/${IMAGENAME}:${IMAGE_VER}
 

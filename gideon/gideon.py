@@ -2,6 +2,7 @@ import select
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import ssl
 import os
+import socket
 
 SECRET_PREFIX = "/run/secrets/"
 
@@ -33,7 +34,8 @@ class HttpsHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/plain")
         self.end_headers()
         self.wfile.write(
-            bytes(f"Client connection from {self.client_address} to Gideon {self.server.sni}", "utf-8"))
+            bytes(f"Response from {socket.gethostbyname(socket.gethostname())} at {self.client_address} "
+                  f"requested to {self.server.sni}", "utf-8"))
 
 
 class MxGideon(ThreadingHTTPServer):
@@ -64,8 +66,8 @@ def init_vars():
 
     if "MX_certspath" in os.environ:
         prefix = os.environ["MX_certspath"] 
-        keyfile = f'{prefix}/{domain_name}/key.pem'
-        certfile = f'{prefix}/{domain_name}/cert.pem'
+        keyfile = f'{prefix}/key.pem'
+        certfile = f'{prefix}/cert.pem'
     else:
         prefix = SECRET_PREFIX
         keyfile = f'{prefix}/key.pem'

@@ -6,7 +6,7 @@ services:
       context: ./gideon
       args:
         pyvers: 3.11-slim-bullseye
-    image: maximba/gideon:1.0.0
+    image: maximba/gideon:1.0.7
     secrets:
       - cert.pem
       - key.pem
@@ -36,7 +36,7 @@ services:
       context: ./harrow
       args:
         pyvers: 3.11-slim-bullseye
-    image: maximba/harrow:1.0.0
+    image: maximba/harrow:1.0.4
     environment:
       - MX_domain=${MX_domain}
     command: ["python","harrow.py"]

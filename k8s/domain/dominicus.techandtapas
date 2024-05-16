@@ -1,0 +1,15 @@
+; dominicus.techandtapas zone
+dominicus.techandtapas.                   IN          SOA         sns.dns.icann.org.  noc.dns.icann.org. 2019101701 7200 3600 1209600 3600
+dominicus.techandtapas.                   IN          NS          b.iana-servers.net.
+dominicus.techandtapas.                   IN          NS          b.iana-servers.net.
+dominicus.techandtapas.                   IN          A           127.0.0.1
+house1.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house2.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house3.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house4.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house5.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house6.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house7.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house8.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+house9.dominicus.techandtapas.            IN          CNAME       gideon.svc.cluster.local.
+

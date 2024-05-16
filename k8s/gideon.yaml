@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.service: gideon
+  name: gideon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.service: gideon
+  template:
+    metadata:
+      labels:
+        io.service: gideon
+    spec:
+      containers:
+        - name: gideon
+          env:
+            - name: MX_domain
+              value: dominicus.techandtapas
+            - name: MX_certspath
+              value: /certs
+          image: maximba/gideon:1.0.7
+          ports:
+            - containerPort: 8443
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /certs
+              name: certs
+      hostname: gideon
+      restartPolicy: Always
+      volumes:
+        - name: certs
+          secret:
+            secretName: certs
+            items:
+            - key: cert.pem
+              path: cert.pem
+            - key: key.pem
+              path: key.pem
+            - key: root-ca.pem
+              path: root-ca.pem
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.service: gideon
+  name: gideon
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+    - name: "8443"
+      protocol: TCP
+      port: 8443
+      targetPort: 8443
+    - name: "8080"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.service: gideon

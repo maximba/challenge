@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.service: harrow
+  name: harrow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.service: harrow
+  template:
+    metadata:
+      labels:
+        io.service: harrow
+    spec:
+      containers:
+        - name: harrow
+          env:
+            - name: MX_domain
+              value: dominicus.techandtapas
+          image: maximba/harrow:1.0.4
+      hostname: harrow
+      restartPolicy: Always
